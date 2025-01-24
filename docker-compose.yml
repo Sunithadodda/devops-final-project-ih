@@ -1,0 +1,79 @@
+version: '3.8'
+
+services:
+  # Service for the Next.js app (Frontend)
+  nextjs-app:
+    image: final_frontend:latest
+    container_name: final_frontend
+    build:
+      context: ./expensy_frontend  
+      dockerfile: Dockerfile  
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URI=mongodb://root:example@mongo:27017
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=someredispassword
+    depends_on:
+      - mongo
+      - redis
+    networks:
+      - app-network
+
+  # Service for the Node.js API (Backend)
+  node-api:
+    image: final_backend:latest  
+    container_name: final_backend
+    build:
+      context: ./expensy_backend  
+      dockerfile: Dockerfile
+    ports:
+      - "8706:8706"
+    environment:
+      - DATABASE_URI=mongodb://root:example@mongo:27017
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=someredispassword
+      - PORT=8706
+    depends_on:
+      - mongo
+      - redis
+    networks:
+      - app-network
+
+  # Service for MongoDB
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - app-network
+
+  # Service for Redis
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_PASSWORD=someredispassword
+    command: ["redis-server", "--requirepass", "someredispassword"]
+    networks:
+      - app-network
+
+# Define a network for the containers to communicate
+networks:
+  app-network:
+    driver: bridge
+
+# Define volumes to persist MongoDB data
+volumes:
+  mongo-data:
+    driver: local
