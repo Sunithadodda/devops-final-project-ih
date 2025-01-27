@@ -7,13 +7,13 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: build  # This means deploy will run after build completes successfully.
 
     steps:
