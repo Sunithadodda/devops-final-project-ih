@@ -71,8 +71,8 @@ jobs:
           ls
         
           #cd kubernetes_manifest_files || exit 1  # Change into the cloned directory
-          kubectl apply -f ./backend-deployment.yml 
-          kubectl apply -f ./backend-service.yml 
+          kubectl apply -f ./backend-deployment.yml --validate=false
+          kubectl apply -f ./backend-service.yml --validate=false
           kubectl apply -f database-deployment.yml --validate=false
           kubectl apply -f database-service.yml --validate=false
           kubectl apply -f database-pv.yml --validate=false
