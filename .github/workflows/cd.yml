@@ -63,7 +63,9 @@ jobs:
             echo "kubectl is already installed."
           fi
         EOF
+   
     - name: Update Kubeconfig for EKS
+  
       uses: aws-actions/eks-update-kubeconfig@v1
       with:
        name: sun_cluster
