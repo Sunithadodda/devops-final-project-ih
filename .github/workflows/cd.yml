@@ -34,7 +34,7 @@ jobs:
       run: |
         mkdir -p ~/.ssh
         echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/sun_KP.pem
-        chmod 777 ~/.ssh/sun_KP.pem
+        chmod 600 ~/.ssh/sun_KP.pem
 
 
     - name: Add EC2 instance to known hosts
