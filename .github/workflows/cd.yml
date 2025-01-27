@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v3
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: build  # This means deploy will run after build completes successfully.
 
     steps:
@@ -51,24 +51,11 @@ jobs:
           cd devops-final-project-ih/kubernetes_manifest_files || exit 1
         EOF
 
-    - name: Setup kubectl
-      run: |
-        ssh -i ~/.ssh/sun_KP.pem ubuntu@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
-          # Install kubectl if not already installed
-          if ! command -v kubectl &> /dev/null; then
-            echo "Installing kubectl..."
-            curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
-            chmod +x ./kubectl
-            sudo mv ./kubectl /usr/local/bin/kubectl
-          else
-            echo "kubectl is already installed."
-          fi
-        EOF
     - name: Deploy manifests to EKS
       run: |
 
         ssh -i ~/.ssh/sun_KP.pem ubuntu@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
-          cd devops-final-project-ih/kubernetes_manifest_files || exit 1  # Change into the cloned directory
+          cd ~/devops-final-project-ih/kubernetes_manifest_files || exit 1  # Change into the cloned directory
           ls
           kubectl apply -f backend-deployment.yml --validate=false
           kubectl apply -f backend-service.yml --validate=false
