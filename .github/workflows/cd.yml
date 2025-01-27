@@ -63,16 +63,15 @@ jobs:
             echo "kubectl is already installed."
           fi
         EOF
-
+    - name: Update Kubeconfig for EKS
+      uses: aws-actions/eks-update-kubeconfig@v1
+      with:
+       name: sun_cluster
+      
     - name: Deploy manifests to EKS
       run: |
-        kubectl config view
-        kubectl get nodes
-
 
         ssh -i ~/.ssh/sun_KP.pem ubuntu@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
-          ls
-          echo"test"
           cd devops-final-project-ih/kubernetes_manifest_files || exit 1  # Change into the cloned directory
           ls
         
