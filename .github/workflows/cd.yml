@@ -66,9 +66,9 @@ jobs:
 
     - name: Deploy manifests to EKS
       run: |
-        #ssh -i ~/.ssh/sun_KP.pem ubuntu@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
-          cd devops-final-project-ih || exit 1  # Change into the cloned directory
-          cd kubernetes_manifest_files || exit 1  # Change into the cloned directory
+        ssh -i ~/.ssh/sun_KP.pem ubuntu@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
+          cd devops-final-project-ih/kubernetes_manifest_files || exit 1  # Change into the cloned directory
+          #cd kubernetes_manifest_files || exit 1  # Change into the cloned directory
           kubectl apply -f backend-deployment.yml --validate=false
           kubectl apply -f backend-service.yml --validate=false
           kubectl apply -f database-deployment.yml --validate=false
