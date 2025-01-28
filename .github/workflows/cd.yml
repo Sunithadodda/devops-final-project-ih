@@ -25,7 +25,7 @@ jobs:
         aws-region: ${{ secrets.AWS_REGION }}
         
     - name: Updating the EKS cluster using kubeconfig
-      run: aws eks update-kubeconfig --region ${{ secrets.AWS_REGION }} --name sun_cluster
+      run: aws eks update-kubeconfig --region ${{ secrets.AWS_REGION }} --name sun111_cluster
       env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }} 
