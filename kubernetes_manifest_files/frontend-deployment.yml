@@ -22,4 +22,4 @@ spec:
           name: frontend
         env:
           - name: NEXT_PUBLIC_API_URL
-            value: "aad5d785e199b4e418b4d3c22348c2e0-1445341052.eu-central-2.elb.amazonaws.com:8706"  # Backend service URL
+            value: "http://aad5d785e199b4e418b4d3c22348c2e0-1445341052.eu-central-2.elb.amazonaws.com:8706"  # Backend service URL
