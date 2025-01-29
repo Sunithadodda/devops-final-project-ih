@@ -5,7 +5,7 @@ provider "aws" {
 data "aws_availability_zones" "available" {}
 
 locals {
-  cluster_name = "sun_cluster"
+  cluster_name = "sun111_cluster"
 }
 
 module "vpc" {
