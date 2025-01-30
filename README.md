@@ -1,157 +1,143 @@
-<!-- Final Project: End-to-End DevOps Deployment -->
+# Devops_Final_Project_Ih
 
-## Lesson Overview :pencil2:
+## Overview
 
-In this project, we will focus on the hands-on implementation of the learnings throughout this program, where you will gain practical insights while setting up the entire DevOps cycle and deploying applications using acquired best practices. 
+This project demonstrates the development, containerization, Inrastructure using terraform, deployment, and continuous integration (CI) and continuous delivery (CD) of a web application. 
 
-<br>
+The project is structured into four parts:
 
-## Learning Objectives :notebook:
+1. **Containerization of Microservices**: Dockerize the frontend, backend, and database.
+2. **Infrastrucure using Terraform**: Provision EKS cluster.
+3. **Kubernetes Deployment**: Deploy the application on Kubernetes (Amazon EKS).
+4. **Continuous Integration (CI)**: Implement a CI pipeline using GitHub Actions.
+5. **Continuous Delivery (CD)**: Implement a CD pipeline to deploy the application to Amazon EKS.
+6. **Monitoring**: Monitering using Prometheus and Grafana
 
-By the end of this project, you will: 
+## Pre-requisites
 
-1. Apply DevOps practices to a real-world project in a production environment.
-2. Build an effective CI/CD pipeline to automate delivery.
-3. Automate provisioning, configuration and infrastructure management using Terraform and Ansible. 
-4. Deploy and manage containerized applications using Kubernetes. 
-5. Integrate applications with Managed Kubernetes Service and other cloud services
-6. Set up monitoring and create dashboards using Grafana and Prometheus
-7. Resolve issues arising during the entire cycle using best practices
+Before you start, make sure you have the following:
 
-<br>
+- A **host machine** with **Docker** and a **Kubernetes cluster** (EKS) installed.
+- An **AWS account** with valid IAM user permissions.
+- Basic knowledge of Docker, Kubernetes, and GitHub Actions.
 
-## Project Highlights :key:
+## Project Structure
 
-### Product Management:
+- `expensy_backend`: Backend application code.
+- `expensy_frontend`: Frontend application code.
+- `Mongodb and Redis`: Database used in the project.
 
-1. This capstone project is a team project, where you will assume roles and work as a scrum team. 
-2. The following indicators will be helpful for the successful completion of your project:         
-    - The duration of one Sprint Cycle is 5 days. So, you will have three Sprint Cycles for this project.
-    - Start with identifying a Scrum Master within your team.
-    - Make sure to follow all scrum events like Sprint, Sprint Planning, Daily Scrum, Sprint Review, Sprint Retrospection.
-    - Plan a Sprint Review at the end of every Sprint Cycle.
-3. Your instructor will be the product owner. If you have any questions regarding the requirements or deliverables, you can address them to the Product Owner.
-4. **Suggestion:** Start with a Team Agreement 
-    - Decide your working hours
-    - Decide your definition of done
-    - Decide your team’s way of work
-    - Identify the time when you will have your scrum events like daily scrum, sprint review, and other scrum events 
-5. We will make use of Azure Boards (or JIRA boards or any other similar tool) to manage work
-6. Please ensure that you have your Daily Scrum and evening sync-up (daily retrospective) every day.
-7. The final sprint review and respective presentations will be held on the last day of the project (during the second half).
+## Containerize All Microservices
 
-<br>
+In this part, we containerize the frontend and backend  applications using Docker.
 
-### Pre-requisites
+### Steps:
 
-1. You can use any cloud of your choice (AWS, Azure or Hybrid). Make sure to have an account with free-trial or an account with enough credit.
-2. Create a free account on the DockerHub registry. This account will be used to host docker images used in the project
+1. **Create Docker Images**: 
+   - Frontend and Backend containers should be created using Dockerfiles.
+   - Ensure that Docker network settings are configured to allow communication between the containers.
+   
+2. **Run the Application Locally**:
+   - Deploy the containers locally using Docker and verify the application is running successfully.
+   
 
-### Web Application Introduction
+## Deploy the Application on Kubernetes
 
-This sample application is an Expense Tracker with four microservices, a backend built in node, frontend built with Next.js (Node based framework), along with a MongoDB database and Redis caching DB.
+In this part, we deploy the containerized application on Kubernetes (Amazon EKS).
 
-[Clone this repository and share it with the team](https://github.com/saurabhd2106/devops-final-project.git)
+### Steps:
 
-Your task is to build a solution for this application that is scalable and can support zero to thousands of users. 
+1. **Deployment Manifests**:
+   - Create Kubernetes manifests for the frontend, backend, Mongodb and Redis services.
+   - Deploy the frontend , backend , and database.
 
-### Make sure to use the following:
+2. **Service Configuration**:
+   - Create a **Load Balancer** service for the frontend and backend applications.
+   - Create **ClusterIP** services to connect the frontend and backend, and the backend with Mongodb and Redis.
+   - Use **Persistent Volume** on Amazon EFS to store Mongodb and Redis data.
 
-#### 1. Infrastructure as Code (IaC):
 
-- Use Terraform, AWS CloudFormation, or another IaC tool to define your infrastructure.
+## Continuous Integration (CI)
 
-#### 2. Your infrastructure should include:
+In this part, we implement a CI pipeline using **GitHub Actions**.
 
-- Compute resources (e.g., EC2 instances, Kubernetes clusters).
-- Networking resources (e.g., VPC, subnets, security groups).
-- Storage resources (e.g., S3 buckets, RDS instances).
-- Continuous Integration/Continuous Deployment (CI/CD):
+### Steps:
 
-#### 3. Implement a CI/CD pipeline using tools such as Jenkins, GitLab CI, or GitHub Actions.
+1. **Build, Test, and Scan**:
+   - Add a step to build, test, and scan the frontend and backend code.
+   
+2. **Create Docker Images**:
+   - Add steps to create Docker images for both frontend and backend.
+   - Push these images to **Docker Hub**.
+   
+3. **Deploy Using Manifests**:
+   - Include Kubernetes manifests for creating deployments and services in the pipeline.
 
-The pipeline should:
-- Automatically build and test your application.
-- Deploy the application to a staging environment.
-- Deploy to production upon approval.
+## Continuous Delivery (CD)
 
-#### 4. Containerization and Orchestration:
-- Containerize your application using Docker.
-- Use Kubernetes or Docker Swarm for orchestration to ensure your application can scale horizontally.
+In this part, we implement a CD pipeline to deploy the application to Amazon EKS.
 
-#### 5. Monitoring and Logging:
+### Steps:
 
-- Implement monitoring using tools like Prometheus, Grafana, or AWS CloudWatch.
+1. **Connect to EKS Cluster**:
+   - Add steps to connect to the **Amazon EKS** cluster using the correct IAM permissions.
 
-#### 6. Autoscaling:
+2. **Deploy Using kubectl**:
+   - Use `kubectl apply` commands in the pipeline to deploy all Kubernetes deployments and services.
 
-- Configure autoscaling for your compute resources (e.g., AWS Auto Scaling groups, Kubernetes Horizontal Pod Autoscaler) to handle varying loads.
+3. **Verify Application**:
+   - Ensure that the application is running successfully on the EKS cluster.
 
-#### 7. Security and Compliance:
+## Setting Up the Project
 
-- Implement best security practices, including network security (firewalls, security groups), data encryption, and IAM policies.
-- Ensure compliance with relevant standards (e.g., GDPR, HIPAA) as applicable.
+### Docker Setup
 
-### Deliverables:
+1. Build and run the Docker containers:
 
-#### 1. Infrastructure Code:
+   ```bash
+   docker build -t dsunitha/final_frontend .
+   docker build -t dsunitha/final_backend .
 
-- Provide all IaC scripts and configuration files like Terraform scripts, AWS CloudFormation templates, Ansible playbooks, etc.
-- Include documentation explaining the infrastructure setup and how to deploy it.
+2. Push the Docker images:
+   
+   ```bash
+   docker push dsunitha2/final_backend
+   docker push dsunitha2/final_frontend
+   
+### Kubernetes Setup
+1. Ensure you have a Kubernetes cluster (EKS) running and kubectl is configured.
 
-#### 2. CI/CD Pipeline Configuration:
+2. Apply the Kubernetes manifests:
+   
+   ```bash
+          kubectl apply -f backend-deployment.yml --validate=false
+          kubectl apply -f backend-service.yml --validate=false
+          kubectl apply -f database-deployment.yml --validate=false
+          kubectl apply -f database-service.yml --validate=false
+          kubectl apply -f database-pv.yml --validate=false
+          kubectl apply -f database-pvc.yml --validate=false
+          kubectl apply -f frontend-deployment.yml --validate=false
+          kubectl apply -f frontend-service.yml --validate=false
+          kubectl apply -f redis-deployment.yml --validate=false
+          kubectl apply -f redis-service.yml --validate=false
+          kubectl apply -f redis-pv.yml --validate=false
+          kubectl apply -f redis-pvc.yml --validate=false
 
-- Provide the CI/CD pipeline configuration files like Jenkinsfile, GitHub Actions workflows, etc.
-- Include detailed documentation on how to set up and use the pipeline.
+3. Ensure pods are running:
+    ```bash
+     kubectl get pods
+     kubectl get services
 
-#### 3. Application Containerization and Orchestration:
+### Github Actions Setup
 
-- Provide Dockerfiles and Kubernetes/Docker Swarm configuration files.
-- Include documentation on how to build and deploy the containers.
+Set up GitHub Actions by creating a  .github/workflows/ci.yml file with the necessary steps.
 
-#### 4. Monitoring and Logging Configuration:
+1. Building and testing code.
+2. Creating Docker images and pushing to Docker Hub.
+3. Deploying the application to EKS
 
-- Provide configuration files for monitoring and logging tools, including Prometheus configuration, Grafana dashboards, ELK stack configuration, etc.
-- Include documentation on how to set up and interpret the monitoring and logging data.
-
-#### 5. Autoscaling Configuration:
-
-- Provide configuration files or scripts for autoscaling.
-- Include documentation explaining the autoscaling policies, criteria for scaling, how to simulate load to test autoscaling, commands to check the current scaling status, etc. 
-
-#### 6. Security and Compliance Documentation:
-
-- Provide a security overview document detailing the measures implemented.
-- Include compliance checklists and how your solution adheres to them.
-
-### Evaluation Criteria:
-
-1. Scalability:
-
-- The solution should handle increasing loads efficiently.
-- Autoscaling should work as expected, without degrading performance.
-- Infrastructure should be able to scale horizontally (adding more instances) or vertically (upgrading existing instances) as needed.
-
-2. Reliability:
-
-- The CI/CD pipeline should deploy the application without errors.
-- Monitoring and logging should provide useful insights into the application’s health.
-- The pipeline should be ready for smooth integration of new code and features.
-
-3. Security:
-
-- The solution should follow best security practices.
-- Compliance with relevant standards should be documented.
-
-4. Documentation:
-
-- The documentation should be clear and comprehensive documentation for each component.
-- Ease of understanding and reproducibility must be considered while documenting all components. 
-
-<!-- ## Additional Resources :clipboard: 
-
-If you would like to study these concepts before the class or would benefit from some remedial studying, please utilize the resources below: -->
-
-<br>
-
-**Good luck!**
+### Monitoring Setup
+1. Install and add helm repositories
+2. Install Prometheus and Grafana
+3. Expose Prometheus and Grafana services with Load Balancer
+4. Monitor the performance of your Kubernetes cluster using Grafana’s rich dashboard and Prometheus’s powerful metrics collection
